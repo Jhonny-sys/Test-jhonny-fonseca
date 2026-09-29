@@ -7,7 +7,9 @@ public sealed record Cliente(
     string ClnRazonSocial,
     short ClnPaisCodigo,
     int ClnDptColCodigoDane,
-    int ClnDvsPltColCodigoDane);
+    int ClnDvsPltColCodigoDane,
+    string Departamento,
+    string Municipio);
 
 public sealed record ClienteInput(
     short ClnTipoId,

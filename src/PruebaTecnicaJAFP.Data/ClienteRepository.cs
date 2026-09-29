@@ -6,9 +6,11 @@ namespace PruebaTecnicaJAFP.Data;
 
 public sealed class ClienteRepository(SqlConnectionFactory connectionFactory) : IClienteRepository
 {
+    private const string SeleccionCliente = "SELECT c.ClnId, c.ClnTipoId, c.ClnNumeroIdentificacion, c.ClnRazonSocial, c.ClnPaisCodigo, c.ClnDptColCodigoDane, c.ClnDvsPltColCodigoDane, d.DptColNombredelDepartamento, m.DvsPltColNombreMunicipio FROM dbo.Cliente c INNER JOIN dbo.DepartamentosColombia d ON d.DptColCodigoDane=c.ClnDptColCodigoDane INNER JOIN dbo.DivisionPoliticaColombia m ON m.DvsPltColCodigoDane=c.ClnDvsPltColCodigoDane";
+
     public async Task<IReadOnlyList<Cliente>> ObtenerTodosAsync(CancellationToken ct)
     {
-        const string sql = "SELECT ClnId, ClnTipoId, ClnNumeroIdentificacion, ClnRazonSocial, ClnPaisCodigo, ClnDptColCodigoDane, ClnDvsPltColCodigoDane FROM dbo.Cliente ORDER BY ClnRazonSocial";
+        var sql = $"{SeleccionCliente} ORDER BY c.ClnRazonSocial";
         var resultado = new List<Cliente>();
         await using var conexion = connectionFactory.Crear();
         await conexion.OpenAsync(ct);
@@ -20,7 +22,7 @@ public sealed class ClienteRepository(SqlConnectionFactory connectionFactory) : 
 
     public async Task<Cliente?> ObtenerPorIdAsync(int id, CancellationToken ct)
     {
-        const string sql = "SELECT ClnId, ClnTipoId, ClnNumeroIdentificacion, ClnRazonSocial, ClnPaisCodigo, ClnDptColCodigoDane, ClnDvsPltColCodigoDane FROM dbo.Cliente WHERE ClnId = @id";
+        var sql = $"{SeleccionCliente} WHERE c.ClnId = @id";
         await using var conexion = connectionFactory.Crear();
         await conexion.OpenAsync(ct);
         await using var comando = new SqlCommand(sql, conexion);
@@ -71,5 +73,5 @@ public sealed class ClienteRepository(SqlConnectionFactory connectionFactory) : 
         return comando;
     }
 
-    private static Cliente Mapear(SqlDataReader r) => new(r.GetInt32(0), r.GetInt16(1), r.GetString(2), r.GetString(3), r.GetInt16(4), r.GetInt32(5), r.GetInt32(6));
+    private static Cliente Mapear(SqlDataReader r) => new(r.GetInt32(0), r.GetInt16(1), r.GetString(2), r.GetString(3), r.GetInt16(4), r.GetInt32(5), r.GetInt32(6), r.GetString(7), r.GetString(8));
 }
