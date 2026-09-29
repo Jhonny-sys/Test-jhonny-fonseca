@@ -21,7 +21,7 @@ dotnet build
 dotnet run --project src/PruebaTecnicaJAFP.Api
 ```
 
-Abra Swagger en la URL que muestre la consola, normalmente `http://localhost:5098/swagger`.
+Abra Swagger en la URL que muestre la consola, normalmente `http://localhost:5098/swagger` y la interfaz visual en la URL que se muestra `http://localhost:5098` y las peticiones api sobre la siguiente URL `http://localhost:5098/api/`.
 
 ## Endpoints V1
 
