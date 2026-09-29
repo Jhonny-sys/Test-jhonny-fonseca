@@ -4,7 +4,10 @@ Cada archivo de `migrations/` es una migracion **inmutable**, completa y version
 
 ## Convencion
 
-`V<version>__<descripcion>.sql`, por ejemplo: `V1.1.0__add_cliente_email.sql`.
+`V<version>__<descripcion>.sql`. Versiones actuales:
+
+- `V1.0.0__create_cliente.sql`: tabla `Cliente` con relaciones e indices.
+- `V1.1.0__create_procedimientos_almacenados.sql`: procedimientos almacenados CRUD de `Cliente` (`usp_Cliente_Crear`, `usp_Cliente_Actualizar`, `usp_Cliente_ConsultarTodos`, `usp_Cliente_ConsultarPorId`, `usp_Cliente_ExisteIdentificacion`).
 
 Una modificacion de estructura, datos de referencia, llaves, indices, restricciones, procedimientos, funciones o triggers exige una nueva migracion. Nunca se modifica una migracion aplicada y nunca se usa un backup como mecanismo de actualizacion.
 

@@ -11,7 +11,7 @@ API REST para el CRUD de clientes construida en capas: `Api` (presentacion), `Bu
 ## Configuracion
 
 1. Restaure el backup como `PruebaTecnicaJAFP`. El backup es la linea base que aporta los catalogos; no se usa como mecanismo de actualizacion entre versiones.
-2. Ejecute las migraciones de `database/migrations/` en orden de version. Para V1 ejecute `V1.0.0__create_cliente.sql`; este crea `Cliente`, sus relaciones reales hacia los catalogos del backup y registra la version aplicada en `dbo.SchemaVersion`.
+2. Ejecute las migraciones de `database/migrations/` en orden de version: `V1.0.0__create_cliente.sql` crea `Cliente` con sus relaciones hacia los catalogos del backup, y `V1.1.0__create_procedimientos_almacenados.sql` crea los procedimientos almacenados CRUD (`usp_Cliente_Crear`, `usp_Cliente_Actualizar`, `usp_Cliente_ConsultarTodos`, `usp_Cliente_ConsultarPorId`, `usp_Cliente_ExisteIdentificacion`). Cada migracion queda registrada en `dbo.SchemaVersion`.
 3. Copie `src/PruebaTecnicaJAFP.Api/appsettings.Development.json.example` a `appsettings.Development.json` y complete la cadena de conexion. Este ultimo archivo no se versiona.
 4. Restaure, compile y ejecute:
 
@@ -39,6 +39,7 @@ La API valida que el tipo de identificacion exista, que la identificacion no est
 
 - **Arquitectura en capas:** la API solo atiende HTTP; las reglas viven en Business y el SQL queda encapsulado en Data.
 - **ADO.NET:** permite consultas parametrizadas y dependencias minimas. Todas las operaciones usan parametros para evitar inyeccion SQL.
-- **SQL Server y migraciones:** la migracion V1.0.0 define claves foraneas, restricciones e indice unico para la identificacion. Toda modificacion futura se entrega como un nuevo script inmutable y versionado, registrado en `dbo.SchemaVersion`.
+- **Procedimientos almacenados:** las operaciones CRUD de clientes se ejecutan mediante procedimientos almacenados (`usp_Cliente_*`), llamados con parametros desde ADO.NET; las validaciones de negocio (duplicados, ubicacion valida) siguen en Business y se refuerzan en la base de datos.
+- **SQL Server y migraciones:** V1.0.0 define la tabla Cliente con claves foraneas, restricciones e indice unico; V1.1.0 agrega los procedimientos almacenados. Toda modificacion futura se entrega como un nuevo script inmutable y versionado, registrado en `dbo.SchemaVersion`.
 
 La interfaz web con Bootstrap, pruebas automatizadas y exportacion Excel se planifican para versiones posteriores.
