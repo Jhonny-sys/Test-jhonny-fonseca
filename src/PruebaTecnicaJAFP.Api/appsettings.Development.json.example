@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "PruebaTecnica": "Server=localhost,1433;Database=PruebaTecnicaJAFP;User Id=sa;Password=CAMBIE_ESTA_CLAVE;TrustServerCertificate=True;Encrypt=False"
+  }
+}
